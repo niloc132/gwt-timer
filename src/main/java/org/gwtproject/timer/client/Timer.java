@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 The GWT Authors
+ * Copyright © 2019 The GWT Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,6 @@ public abstract class Timer {
     if (!isRunning()) {
       return;
     }
-
     if (isRepeating) {
       DomGlobal.clearInterval(timerId);
     } else {
@@ -102,11 +101,9 @@ public abstract class Timer {
    * Only call run() if cancelCounter has not changed since the timer was scheduled.
    */
   final void fire() {
-
     if (!isRepeating) {
       timerId = null;
     }
-
     // Run the timer's code.
     run();
   }

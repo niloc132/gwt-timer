@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 The GWT Project Authors
+ * Copyright © 2019 The GWT Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,8 @@ package org.gwtproject.timer.client;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
-public class TimerTest extends GWTTestCase {
+public class TimerGwtTest extends GWTTestCase {
+
   @Override
   public String getModuleName() {
     return "org.gwtproject.timer.Timer";
@@ -50,7 +51,6 @@ public class TimerTest extends GWTTestCase {
   }
 
   public void testTimerCancel() {
-
     delayTestFinish(900);
     Timer timer =
         new Timer() {

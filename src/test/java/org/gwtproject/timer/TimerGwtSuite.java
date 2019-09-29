@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 The GWT Project Authors
+ * Copyright © 2019 The GWT Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  */
 package org.gwtproject.timer;
 
-import org.gwtproject.timer.client.TimerTest;
+import org.gwtproject.timer.client.TimerGwtTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({TimerTest.class})
-public class TimerSuite {}
+@Suite.SuiteClasses({TimerGwtTest.class})
+public class TimerGwtSuite {}

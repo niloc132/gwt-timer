@@ -5,7 +5,8 @@
   <groupId>org.gwtproject.timer</groupId>
   <artifactId>gwt-timer</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>gwt-lib</packaging>
+  <packaging>jar</packaging>
+<!--  <packaging>gwt-lib</packaging>-->
 
   <name>GWT Timer</name>
   <description>A simplified, browser-safe timer class. This class serves the same purpose as java.util.Timer, but is simplified because of the single-threaded
@@ -16,7 +17,7 @@
     <name>The GWT Authors</name>
     <url>https://github.com/gwtproject</url>
   </organization>
-  <inceptionYear>2018</inceptionYear>
+  <inceptionYear>2019</inceptionYear>
 
   <licenses>
     <license>
@@ -46,11 +47,35 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 
+    <maven.clean.plugin>3.1.0</maven.clean.plugin>
+    <maven.compiler.plugin>3.6.1</maven.compiler.plugin>
+    <maven.fmt.plugin>2.5.1</maven.fmt.plugin>
+    <maven.gpg.plugin>1.6</maven.gpg.plugin>
+    <maven.gwt.plugin>1.0-rc-10</maven.gwt.plugin>
+    <maven.javadoc.plugin>3.1.1</maven.javadoc.plugin>
+    <maven.licence.plugin>3.0</maven.licence.plugin>
+    <maven.source.plugin>3.1.0</maven.source.plugin>
+    <maven.surefire.plugin>2.22.2</maven.surefire.plugin>
+
+    <elemental.version>2.26</elemental.version>
     <gwt.version>2.8.2</gwt.version>
-    <elemental.version>1.0.0-RC1</elemental.version>
+    <junit.version>4.12</junit.version>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>org.realityforge.com.google.elemental2</groupId>
+      <artifactId>elemental2-dom</artifactId>
+      <version>${elemental.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.realityforge.com.google.elemental2</groupId>
+      <artifactId>elemental2-dom</artifactId>
+      <version>${elemental.version}</version>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <!-- for test only -->
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
@@ -64,39 +89,78 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.google.elemental2</groupId>
-      <artifactId>elemental2-dom</artifactId>
-      <version>${elemental.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.elemental2</groupId>
-      <artifactId>elemental2-dom</artifactId>
-      <version>${elemental.version}</version>
-      <classifier>sources</classifier>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+      </resource>
+       <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>${project.basedir}/src/test/java</directory>
+      </testResource>
+      <testResource>
+        <directory>${project.basedir}/src/test/resources</directory>
+      </testResource>
+    </testResources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
+        <version>${maven.compiler.plugin}</version>
         <configuration>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <showWarnings>true</showWarnings>
+              <compilerArgument>-proc:none</compilerArgument>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-testCompile</id>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surefire.plugin}</version>
+        <configuration>
+          <additionalClasspathElements>
+            <additionalClasspathElement>${project.build.sourceDirectory}</additionalClasspathElement>
+            <additionalClasspathElement>${project.build.testSourceDirectory}</additionalClasspathElement>
+            <additionalClasspathElement>${project.build.directory}/generated-test-sources/test-annotations
+            </additionalClasspathElement>
+          </additionalClasspathElements>
+          <useManifestOnlyJar>false</useManifestOnlyJar>
+          <reuseForks>false</reuseForks>
         </configuration>
       </plugin>
       <plugin>
         <groupId>com.coveo</groupId>
         <artifactId>fmt-maven-plugin</artifactId>
-        <version>2.5.1</version>
+        <version>${maven.fmt.plugin}</version>
         <executions>
           <execution>
             <goals>
@@ -106,9 +170,25 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>${maven.clean.plugin}</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}</directory>
+              <includes>
+                <include>gwt-unitCache/</include>
+                <include>war/</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
-        <version>3.0</version>
+        <version>${maven.licence.plugin}</version>
         <configuration>
           <header>LICENSE.header</header>
           <encoding>UTF-8</encoding>
@@ -124,6 +204,9 @@
             <exclude>**/*.xml</exclude>
             <exclude>src/test/resources/**</exclude>
             <exclude>src/main/resources/**</exclude>
+            <exclude>gwt-unitCache/**</exclude>
+            <exclude>target/**</exclude>
+            <exclude>war/**</exclude>
           </excludes>
           <properties>
             <year>${project.inceptionYear}</year>
@@ -138,18 +221,19 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>net.ltgt.gwt.maven</groupId>
-        <artifactId>gwt-maven-plugin</artifactId>
-        <version>1.0-rc-9</version>
-        <extensions>true</extensions>
-        <configuration>
-          <moduleName>org.gwtproject.timer.Timer</moduleName>
-          <moduleShortName>timer</moduleShortName>
-          <sourceLevel>${maven.compiler.source}</sourceLevel>
-          <failOnError>true</failOnError>
-        </configuration>
-      </plugin>
+
+<!--      <plugin>-->
+<!--        <groupId>net.ltgt.gwt.maven</groupId>-->
+<!--        <artifactId>gwt-maven-plugin</artifactId>-->
+<!--        <version>${maven.gwt.plugin}</version>-->
+<!--        <extensions>true</extensions>-->
+<!--        <configuration>-->
+<!--          <moduleName>org.gwtproject.timer.Timer</moduleName>-->
+<!--          <moduleShortName>timer</moduleShortName>-->
+<!--          <sourceLevel>${maven.compiler.source}</sourceLevel>-->
+<!--          <failOnError>true</failOnError>-->
+<!--        </configuration>-->
+<!--      </plugin>-->
     </plugins>
   </build>
 
@@ -173,7 +257,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>2.2.1</version>
+            <version>${maven.source.plugin}</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -186,7 +270,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.9.1</version>
+            <version>${maven.javadoc.plugin}</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -200,7 +284,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.5</version>
+            <version>${maven.gpg.plugin}</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
