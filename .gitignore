@@ -223,4 +223,6 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
+# in our case the war directory
+war/
 
