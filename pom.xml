@@ -221,19 +221,6 @@
           </execution>
         </executions>
       </plugin>
-
-<!--      <plugin>-->
-<!--        <groupId>net.ltgt.gwt.maven</groupId>-->
-<!--        <artifactId>gwt-maven-plugin</artifactId>-->
-<!--        <version>${maven.gwt.plugin}</version>-->
-<!--        <extensions>true</extensions>-->
-<!--        <configuration>-->
-<!--          <moduleName>org.gwtproject.timer.Timer</moduleName>-->
-<!--          <moduleShortName>timer</moduleShortName>-->
-<!--          <sourceLevel>${maven.compiler.source}</sourceLevel>-->
-<!--          <failOnError>true</failOnError>-->
-<!--        </configuration>-->
-<!--      </plugin>-->
     </plugins>
   </build>
 
